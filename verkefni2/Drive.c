@@ -34,24 +34,99 @@
 |*    Motor Port 2        rightMotor          VEX 3-wire module     Right side motor                  *|
 |*    Motor Port 3        leftMotor           VEX 3-wire module     Left side motor                   *|
 \*-----------------------------------------------------------------------------------------------4246-*/
-const int defaultPower = 127;
+const int DEFAULTPOWER = 127;
+const int ROBOTDIAMETER = 38;
+const int WHEELDIAMETER = 10;
 
 int Msec(int sec)
 {
 	return sec / 1000;
 }
 
-void drive(int power = defaultPower, int time = 3000)
+void drive(int power = DEFAULTPOWER, int time = 3000)
 {
-	motor[rightMotor] = power;
-	motor[leftMotor]  = power;
-	wait1Msec(time);
+	int timeRemaining = time;
+	SensorValue[leftEncoder] = 0;
+	SensorValue[rightEncoder] = 0;
+	while (timeRemaining > 0)
+	{
+		int leftEncoder = SensorValue[leftEncoder];
+		int rightEncoder = SensorValue[rightEncoder];
+		if (leftEncoder == rightEncoder)
+		{
+			motor[rightMotor] = power;
+			motor[leftMotor]  = power;
+		}
+		else if (leftEncoder > rightEncoder)
+		{
+				motor[rightMotor] = power;
+				motor[leftMotor]  = power * 0.7;
+		}
+		else if (rightEncoder < leftEncoder)
+		{
+				motor[rightMotor] = power * 0.7;
+				motor[leftMotor]  = power;
+		}
+		wait1Msec(1);
+		timeRemaining--;
+	}
+}
+
+void driveDistance(int cm = 60, int power = DEFAULTPOWER)
+{
+	SensorValue[leftEncoder] = 0;
+	SensorValue[rightEncoder] = 0;
+	while ((SensorValue[leftEncoder] * -1) < (cm / WHEELDIAMETER * 360))
+	{
+		int leftEncoder = SensorValue[leftEncoder] * -1;
+		int rightEncoder = SensorValue[rightEncoder] * -1;
+		if (leftEncoder == rightEncoder)
+		{
+			motor[rightMotor] = power;
+			motor[leftMotor]  = power;
+		}
+		else if (leftEncoder > rightEncoder)
+		{
+				motor[rightMotor] = power;
+				motor[leftMotor]  = power * 0.7;
+		}
+		else if (rightEncoder < leftEncoder)
+		{
+				motor[rightMotor] = power * 0.7;
+				motor[leftMotor]  = power;
+		}
+		wait1Msec(1);
+	}
+}
+
+void reverse(int power = DEFAULTPOWER, int time = 3000)
+{
+		drive(power * -1, time);
+}
+
+void turnRight(int deg = 90)
+{
+	SensorValue[rightEncoder] = 0;
+	SensorValue[leftEncoder] = 0;
+	motor[rightMotor] = 127;
+	motor[leftMotor]  = 0;
+	while (((SensorValue[rightEncoder] * -1) / 360 * WHEELDIAMETER) < (deg / 360 * ROBOTDIAMETER))
+	{
+			wait1Msec(100);
+	}
+}
+
+void turnLeft(int deg = 90)
+{
+	motor[rightMotor] = 0;
+	motor[leftMotor]  = 127;
+	wait1Msec(1000);
 }
 
 //+++++++++++++++++++++++++++++++++++++++++++++| MAIN |+++++++++++++++++++++++++++++++++++++++++++++++
 
 task main()
 {
-	drive();
+	driveDistance(40);
 }										        // Program ends, and the robot stops
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
