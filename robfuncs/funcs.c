@@ -1,14 +1,13 @@
 
-
 int Msec(int sec)
 {
 	return sec / 1000;
 }
 
-void drive(int power = DEFAULTPOWER, int time = 3000)
+void drive(int power = DEFAULTPOWER, long time = 3000)
 {
 	int speed = 0;
-	int timeRemaining = time;
+	long timeRemaining = time;
 	SensorValue[leftEncoder] = 0;
 	SensorValue[rightEncoder] = 0;
 	while (timeRemaining > 0)
@@ -23,13 +22,13 @@ void drive(int power = DEFAULTPOWER, int time = 3000)
 		}
 		else if (leftEncoder < rightEncoder)
 		{
-				motor[rightMotor] = power * 0.9;
+				motor[rightMotor] = (int) power * 0.9;
 				motor[leftMotor]  = power;
 		}
 		else if (rightEncoder < leftEncoder)
 		{
 				motor[rightMotor] = power;
-				motor[leftMotor]  = power * 0.9;
+				motor[leftMotor]  = (int) power * 0.9;
 		}
 		wait1Msec(1);
 		timeRemaining--;
@@ -68,14 +67,14 @@ void reverse(int power = DEFAULTPOWER, int time = 3000)
 		drive(power * -1, time);
 }
 
-void stopDrive()
+/*void stopDrive()
 {
 	if(motor[rightMotor] > 0 && motor[leftMotor] > 0)
 	{
 		while(motor[rightMotor] > 0 || motor[leftMotor] > 0)
 		{
 			motor[leftMotor] = motor[leftMotor] - 1;
-			motor[rightMotor = motor[rightmotor] -1;
+			motor[rightMotor = motor[rightMotor] -1;
 			Sleep(Msec)
 		}
 	}
@@ -84,11 +83,11 @@ void stopDrive()
 		while(motor[rightMotor] < 0 || motor[leftMotor] < 0)
 		{
 			motor[leftMotor] = motor[leftMotor] + 1;
-			motor[rightMotor = motor[rightmotor] + 1;
+			motor[rightMotor = motor[rightMotor] + 1;
 			sleep(Msec)
 		}
 	}
-}
+}*/
 
 void turnRight(int deg = 90)
 {
