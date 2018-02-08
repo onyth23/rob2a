@@ -39,42 +39,14 @@
 
 
 
-void stopDrive()
-{
-	if(motor[rightMotor] > 0 && motor[leftMotor] > 0)
-	{
-		while(motor[rightMotor] > 0 || motor[leftMotor] > 0)
-		{
-			motor[leftMotor] = motor[leftMotor] - 1;
-			motor[rightMotor = motor[rightmotor] -1;
-			Sleep(Msec)
-		}
-	}
-	if else(motor[rightMotor] < 0 && motor[leftMotor] < 0)
-	{
-		while(motor[rightMotor] < 0 || motor[leftMotor] < 0)
-		{
-			motor[leftMotor] = motor[leftMotor] + 1;
-			motor[rightMotor = motor[rightmotor] + 1;
-			sleep(Msec)
-		}
-	}
-}
-
-
-
 //+++++++++++++++++++++++++++++++++++++++++++++| MAIN |+++++++++++++++++++++++++++++++++++++++++++++++
 
 task main()
 {
-<<<<<<< HEAD
 	for (int i = 500; i < 2500; i += 500)
 	{
 		drive(DEFAULTPOWER, (1000 / 15) * i);
 		reverse(DEFAULTPOWER, (1000 / 15) * i);
 	}
-=======
-	drive(1000)
->>>>>>> 1549bde32545727c46f85f185d4365936ed4f011
 }										        // Program ends, and the robot stops
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
