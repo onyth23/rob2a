@@ -4,15 +4,13 @@ int Msec(int sec)
 	return sec / 1000;
 }
 
-void drive(int power = DEFAULTPOWER, long time = 3000)
+void drive(long time = 3000, int power = DEFAULTPOWER)
 {
-	int speed = 0;
 	long timeRemaining = time;
 	SensorValue[leftEncoder] = 0;
 	SensorValue[rightEncoder] = 0;
 	while (timeRemaining > 0)
 	{
-		speed = SensorValue[accel];
 		int leftEncoder = abs(SensorValue[leftEncoder]);
 		int rightEncoder = abs(SensorValue[rightEncoder]);
 		if (leftEncoder == rightEncoder)
@@ -30,8 +28,8 @@ void drive(int power = DEFAULTPOWER, long time = 3000)
 				motor[rightMotor] = power;
 				motor[leftMotor]  = (int) power * 0.9;
 		}
-		wait1Msec(1);
-		timeRemaining--;
+		wait1Msec(10);
+		timeRemaining -= 10;
 	}
 }
 
@@ -62,9 +60,9 @@ void driveDistance(int cm = 60, int power = DEFAULTPOWER)
 	}
 }
 
-void reverse(int power = DEFAULTPOWER, int time = 3000)
+void reverse(long time = 3000, int power = DEFAULTPOWER)
 {
-		drive(power * -1, time);
+		drive(time, -127);
 }
 
 /*void stopDrive()

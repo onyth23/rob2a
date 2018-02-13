@@ -42,10 +42,14 @@
 
 task main()
 {
-	for (int i = 500; i < 2500; i += 500)
+	while (true)
 	{
-		drive(DEFAULTPOWER, (long)((10 / 15) * i));
-		reverse(DEFAULTPOWER, (long)((10 / 15) * i));
+		wait10Msec(1000);
+		for (int i = 500; i < 2500; i += 500)
+		{
+			drive((long) i);
+			reverse((long) i);
+		}
 	}
 }										        // Program ends, and the robot stops
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
