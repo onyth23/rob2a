@@ -37,19 +37,50 @@
 #include "../robheaders/const.h"
 #include "../robfuncs/funcs.c"
 
+int turnLeftValue = 0;
+int turnRightValue = 0;
+int forwardValue = 0;
 
-//+++++++++++++++++++++++++++++++++++++++++++++| MAIN |+++++++++++++++++++++++++++++++++++++++++++++++
+void updateControllerValues()
+{
+	forwardValue = vexRT[Ch3];
+	if (vexRT[ch1] > 10)
+	{
+		turnLeftValue = abs(vexRT[ch1]);
+	}
+	else if (vexRT[ch1] < -10)
+	{
+		turnRightValue = abs(vexRT[ch1]);
+	}
+	else
+	{
+		turnLeftValue = 0;
+		turnRightValue = 0;
+	}
+}
+
+void move()
+{
+		int leftMotorValue = forwardValue;
+		int rightMotorValue = forwardValue;
+		if (turnLeftValue > 0)
+		{
+				leftMotorValue -= turnLeftValue;
+		}
+		else if (turnRightValue > 0)
+		{
+			rightMotorValue -= turnRightValue;
+		}
+		setMotors(leftMotorValue, rightMotorValue);
+}
 
 task main()
 {
+	wait10Msec(1000);
 	while (true)
 	{
-		wait10Msec(1000);
-		for (int i = 850; i < (850 * 5); i += 850)
-		{
-			driveTime((long) i);
-			reverseTime((long) i);
-		}
+		updateControllerValues();
+		move();
+		// setMotors((int) vexRT[Ch2], (int) vexRT[Ch3]);
 	}
-}										        // Program ends, and the robot stops
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+}

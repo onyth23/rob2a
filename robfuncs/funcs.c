@@ -15,7 +15,13 @@ void resetEncoders()
 	SensorValue[rightEncoder] = 0;
 }
 
-void drive(long time = 3000, int power = DEFAULTPOWER)
+void setMotors(int left = 127, int right = 127)
+{
+	motor[leftMotor] = left;
+	motor[rightMotor] = right;
+}
+
+void driveTime(long time = 3000, int power = DEFAULTPOWER)
 {
 	long timeRemaining = time;
 	resetEncoders();
@@ -25,18 +31,15 @@ void drive(long time = 3000, int power = DEFAULTPOWER)
 		int rightEncoder = abs(SensorValue[rightEncoder]);
 		if (leftEncoder == rightEncoder)
 		{
-			motor[rightMotor] = power;
-			motor[leftMotor]  = power;
+			setMotors(power, power);
 		 }
 		else if (leftEncoder < rightEncoder)
 		{
-			motor[rightMotor] = (int) power * (leftEncoder / rightEncoder);
-			motor[leftMotor]  = power;
+			setMotors(power, (int) power * (leftEncoder / rightEncoder));
 		}
 		else if (rightEncoder < leftEncoder)
 		{
-			motor[rightMotor] = power;
-			motor[leftMotor]  = (int) power * (rightEncoder / leftEncoder);
+			setMotors((int) power * (rightEncoder / leftEncoder), power);
 		}
 		wait1Msec(100);
 		timeRemaining -= 100;
@@ -45,34 +48,30 @@ void drive(long time = 3000, int power = DEFAULTPOWER)
 
 void driveDistance(int cm = 60, int power = DEFAULTPOWER)
 {
-	SensorValue[leftEncoder] = 0;
-	SensorValue[rightEncoder] = 0;
+	resetEncoders();
 	while (abs(SensorValue[leftEncoder]) < (cm / WHEELDIAMETER * 360))
 	{
 		int leftEncoder = abs(SensorValue[leftEncoder]);
 		int rightEncoder = abs(SensorValue[rightEncoder]);
 		if (leftEncoder == rightEncoder)
 		{
-			motor[rightMotor] = power;
-			motor[leftMotor]  = power;
-		}
+			setMotors(power, power);
+		 }
 		else if (leftEncoder < rightEncoder)
 		{
-			motor[rightMotor] = power * 0.9;
-			motor[leftMotor]  = power;
+			setMotors(power, (int) power * (leftEncoder / rightEncoder));
 		}
 		else if (rightEncoder < leftEncoder)
 		{
-			motor[rightMotor] = power;
-			motor[leftMotor]  = power * 0.9;
+			setMotors((int) power * (rightEncoder / leftEncoder), power);
 		}
 		wait1Msec(100);
 	}
 }
 
-void reverse(long time = 3000, int power = DEFAULTPOWER)
+void reverseTime(long time = 3000, int power = DEFAULTPOWER)
 {
-		drive(time, -127);
+		driveTime(time, -127);
 }
 
 /*void stopDrive()
