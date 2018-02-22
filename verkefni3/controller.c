@@ -37,39 +37,45 @@
 #include "../robheaders/const.h"
 #include "../robfuncs/funcs.c"
 
-int turnLeftValue = 0;
-int turnRightValue = 0;
 int forwardValue = 0;
+
+void turnWithController(int *motorValue1, int *motorValue2, int turnValue)
+{
+		if (motorValue1 < -5)
+		{
+			motorValue1 += turnValue;
+			writeDebugStream("%d", (int)motorValue1 * -1);
+		}
+		else if (motorValue1 > 5)
+		{
+			motorValue1 -= turnValue;
+			writeDebugStream("%d", (int)motorValue1 * -1);
+		}
+		else
+		{
+			motorValue1 = (int*)turnValue;
+			motorValue2 = (int*)(turnValue * -1);
+			writeDebugStream("%d", (int)motorValue1 * -1);
+
+		}
+}
 
 void updateControllerValues()
 {
 	forwardValue = vexRT[Ch3];
-	if (vexRT[ch1] > 10)
-	{
-		turnLeftValue = abs(vexRT[ch1]);
-	}
-	else if (vexRT[ch1] < -10)
-	{
-		turnRightValue = abs(vexRT[ch1]);
-	}
-	else
-	{
-		turnLeftValue = 0;
-		turnRightValue = 0;
-	}
 }
 
 void move()
 {
 		int leftMotorValue = forwardValue;
 		int rightMotorValue = forwardValue;
-		if (turnLeftValue > 0)
+		if (vexRT[ch1] > 10)
 		{
-				leftMotorValue -= turnLeftValue;
+				turnWithController(&rightMotorValue, &leftMotorValue, abs(vexRT[ch1]));
 		}
-		else if (turnRightValue > 0)
+		else if (vexRT[ch1] < -10)
 		{
-			rightMotorValue -= turnRightValue;
+			turnWithController(&leftMotorValue, &rightMotorValue, abs(vexRT[ch1]));
 		}
 		setMotors(leftMotorValue, rightMotorValue);
 }
@@ -81,6 +87,6 @@ task main()
 	{
 		updateControllerValues();
 		move();
-		// setMotors((int) vexRT[Ch2], (int) vexRT[Ch3]);
+	 //setMotors((int) vexRT[Ch2], (int) vexRT[Ch3]);
 	}
 }
