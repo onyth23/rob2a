@@ -1,0 +1,13 @@
+START
+Ef RightJoyStick er ýtt áfram þá keyra allir motorar áfram
+Ef RightJoyStick er ýtt aftur þá keyra allir motorar afturábak
+
+Ef LeftJoyStick er ýtt til vinstri keyrir hægri motor afturábak
+og vinstri motor áfram. Svo robotinn beygir til vintri.
+Ef LeftJoyStick er ýtt til hægri keyrir hægri motor áfram
+og vinstri motor afturábak Svo robotinn beygir til hægri
+
+Ef LeftTrigger er haldið niðri þá fer klóin niður.
+Ef RightTrigger er haldið niðri þá fer klóin upp.
+
+Ef ýtt er á RightBtn þá lokast klóin. Ef ýtt er aftur þá opnast hún.

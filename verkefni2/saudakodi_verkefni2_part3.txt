@@ -1,0 +1,9 @@
+Byrja
+Keyra áfram 50cm
+Snúa 90° til vinstri
+Keyra áfram 50cm
+Snúa 90° til hægri
+Keyra áfram 50cm
+Snú 90° til hægri
+Keyra áfram 50cm
+Stoppa
