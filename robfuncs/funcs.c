@@ -1,8 +1,6 @@
 
-//enum DIRECTION {
-//	LEFT,
-//	RIGHT
-//}
+#include "calibration.c"
+#include "update.c"
 
 int Msec(int sec)
 {
@@ -21,36 +19,73 @@ void setMotors(int left = 127, int right = 127)
 	motor[rightMotor] = right;
 }
 
+void setArmPos(int pos)
+{
+
+}
+
 void driveTime(long time = 3000, int power = DEFAULTPOWER)
 {
 	long timeRemaining = time;
 	resetEncoders();
+	int currentPower = (int) (motor[leftMotor] + motor[rightMotor]) / 2;
 	while (timeRemaining > 0)
 	{
+		if (currentPower > power - 10 && currentPower < power + 10)
+		{
+			currentPower = power;
+		}
+		else 
+		{
+			if (currentPower > power)
+			{
+				currentPower -= 1;
+			}
+			else if (currentPower < power)
+			{
+				currentPower += 1;
+			}
+		}
 		int leftEncoder = abs(SensorValue[leftEncoder]);
 		int rightEncoder = abs(SensorValue[rightEncoder]);
 		if (leftEncoder == rightEncoder)
 		{
-			setMotors(power, power);
+			setMotors(currentPower, currentPower);
 		 }
 		else if (leftEncoder < rightEncoder)
 		{
-			setMotors(power, (int) power * (leftEncoder / rightEncoder));
+			setMotors(currentPower, (int) currentPower * (leftEncoder / rightEncoder));
 		}
 		else if (rightEncoder < leftEncoder)
 		{
-			setMotors((int) power * (rightEncoder / leftEncoder), power);
+			setMotors((int) currentPower * (rightEncoder / leftEncoder), currentPower);
 		}
-		wait1Msec(100);
-		timeRemaining -= 100;
+		wait1Msec(10);
+		timeRemaining -= 10;
 	}
 }
 
 void driveDistance(int cm = 60, int power = DEFAULTPOWER)
 {
 	resetEncoders();
+	int currentPower = (int) (motor[leftMotor] + motor[rightMotor]) / 2;
 	while (abs(SensorValue[leftEncoder]) < (cm / WHEELDIAMETER * 360))
 	{
+		if (currentPower > power - 10 && currentPower < power + 10)
+		{
+			currentPower = power;
+		}
+		else 
+		{
+			if (currentPower > power)
+			{
+				currentPower -= 1;
+			}
+			else if (currentPower < power)
+			{
+				currentPower += 1;
+			}
+		}
 		int leftEncoder = abs(SensorValue[leftEncoder]);
 		int rightEncoder = abs(SensorValue[rightEncoder]);
 		if (leftEncoder == rightEncoder)
@@ -65,7 +100,7 @@ void driveDistance(int cm = 60, int power = DEFAULTPOWER)
 		{
 			setMotors((int) power * (rightEncoder / leftEncoder), power);
 		}
-		wait1Msec(100);
+		wait1Msec(10);
 	}
 }
 
@@ -106,4 +141,13 @@ void turn(/*DIRECTION direction = DIRECTION::RIGHT, */int deg = 90)
 	{
 			wait1Msec(100);
 	}
+}
+
+
+void stopAll()
+{
+	motor[leftMotor] = 0;
+	motor[rightMotor] = 0;
+	motor[armMotor] = 0;
+	motor[armGrab] = 0;
 }
