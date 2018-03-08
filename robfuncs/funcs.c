@@ -29,29 +29,28 @@ void driveTime(long time = 3000, int power = DEFAULTPOWER)
 	long timeRemaining = time;
 	resetEncoders();
 	int currentPower = (int) (motor[leftMotor] + motor[rightMotor]) / 2;
+	while (currentPower > power + 10 || currentPower < power - 10)
+	{
+		if (currentPower > power)
+		{
+			currentPower -= 1;
+		}
+		else if (currentPower < power)
+		{
+			currentPower += 1;
+		}
+		setMotors(currentPower, currentPower);
+		wait1Msec(3);
+	}
+	currentPower = power;
 	while (timeRemaining > 0)
 	{
-		if (currentPower > power - 10 && currentPower < power + 10)
-		{
-			currentPower = power;
-		}
-		else 
-		{
-			if (currentPower > power)
-			{
-				currentPower -= 1;
-			}
-			else if (currentPower < power)
-			{
-				currentPower += 1;
-			}
-		}
 		int leftEncoder = abs(SensorValue[leftEncoder]);
 		int rightEncoder = abs(SensorValue[rightEncoder]);
 		if (leftEncoder == rightEncoder)
 		{
 			setMotors(currentPower, currentPower);
-		 }
+		}
 		else if (leftEncoder < rightEncoder)
 		{
 			setMotors(currentPower, (int) currentPower * (leftEncoder / rightEncoder));
@@ -69,23 +68,22 @@ void driveDistance(int cm = 60, int power = DEFAULTPOWER)
 {
 	resetEncoders();
 	int currentPower = (int) (motor[leftMotor] + motor[rightMotor]) / 2;
+	while (currentPower > power + 10 || currentPower < power - 10)
+	{
+		if (currentPower > power)
+		{
+			currentPower -= 1;
+		}
+		else if (currentPower < power)
+		{
+			currentPower += 1;
+		}
+		setMotors(currentPower, currentPower);
+		wait1Msec(3);
+	}
+	currentPower = power;
 	while (abs(SensorValue[leftEncoder]) < (cm / WHEELDIAMETER * 360))
 	{
-		if (currentPower > power - 10 && currentPower < power + 10)
-		{
-			currentPower = power;
-		}
-		else 
-		{
-			if (currentPower > power)
-			{
-				currentPower -= 1;
-			}
-			else if (currentPower < power)
-			{
-				currentPower += 1;
-			}
-		}
 		int leftEncoder = abs(SensorValue[leftEncoder]);
 		int rightEncoder = abs(SensorValue[rightEncoder]);
 		if (leftEncoder == rightEncoder)
@@ -106,7 +104,12 @@ void driveDistance(int cm = 60, int power = DEFAULTPOWER)
 
 void reverseTime(long time = 3000, int power = DEFAULTPOWER)
 {
-		driveTime(time, -127);
+	driveTime(time, power * -1);
+}
+
+void reverseDistance(long time = 3000, int power = DEFAULTPOWER)
+{
+	driveDistance(time, power * -1);
 }
 
 /*void stopDrive()
@@ -120,7 +123,7 @@ void reverseTime(long time = 3000, int power = DEFAULTPOWER)
 			Sleep(Msec)
 		}
 	}
-	if else(motor[rightMotor] < 0 && motor[leftMotor] < 0)
+	else if(motor[rightMotor] < 0 && motor[leftMotor] < 0)
 	{
 		while(motor[rightMotor] < 0 || motor[leftMotor] < 0)
 		{
@@ -131,15 +134,13 @@ void reverseTime(long time = 3000, int power = DEFAULTPOWER)
 	}
 }*/
 
-void turn(/*DIRECTION direction = DIRECTION::RIGHT, */int deg = 90)
+void turn(int deg = 90)
 {
-	SensorValue[rightEncoder] = 0;
-	SensorValue[leftEncoder] = 0;
-	motor[rightMotor] = 127;
-	motor[leftMotor]  = 0;
-	while (((SensorValue[rightEncoder] * -1) / 360 * WHEELDIAMETER) < (deg / 360 * ROBOTDIAMETER))
+	resetEncoders();
+	setMotors(127, -127);
+	while ((abs(SensorValue[rightEncoder]) / 360 * WHEELDIAMETER) < (deg / 360 * ROBOTDIAMETER))
 	{
-			wait1Msec(100);
+		wait1Msec(100);
 	}
 }
 

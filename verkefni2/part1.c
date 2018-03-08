@@ -35,7 +35,7 @@
 |*    Motor Port 3        leftMotor           VEX 3-wire module     Left side motor                   *|
 \*-----------------------------------------------------------------------------------------------4246-*/
 #include "../robheaders/const.h"
-#include "../robfuncs/drive.cpp"
+#include "../robfuncs/funcs.c"
 
 
 //+++++++++++++++++++++++++++++++++++++++++++++| MAIN |+++++++++++++++++++++++++++++++++++++++++++++++
@@ -45,13 +45,12 @@ task main()
 	while (true)
 	{
 		wait10Msec(1000);
-     Drive::forward(1000);
-     continue;
-		for (int i = 500; i < 2500; i += 500)
+		for (int i = 850; i < (850 * 6); i += 850)
 		{
-            Drive::forward((long) i);
-            Drive::backward((long) i);
+			driveTime((long) i);
+			reverseTime((long) i);
 		}
+		setMotors(0, 0);
 	}
 }										        // Program ends, and the robot stops
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

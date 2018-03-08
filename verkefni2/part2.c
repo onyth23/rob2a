@@ -45,10 +45,10 @@ task main()
 	while (true)
 	{
 		wait10Msec(1000);
-		for (int i = 850; i < (850 * 6); i += 850)
+		for (int i = 50; i < (50 * 6); i += 50)
 		{
-			driveTime((long) i);
-			reverseTime((long) i);
+			driveDistance((long) i);
+			reverseDistance((long) i);
 		}
 		setMotors(0, 0);
 	}
