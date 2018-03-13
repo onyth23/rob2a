@@ -44,13 +44,16 @@ task main()
 {
 	while (true)
 	{
-		wait10Msec(1000);
-		for (int i = 850; i < (850 * 6); i += 850)
-		{
-			driveTime((long) i);
-			reverseTime((long) i);
-		}
-		setMotors(0, 0);
+    wait10Msec(1000);
+
+    driveDistance(50);
+    turn(LEFT);
+    driveDistance(50);
+    turn(RIGHT);
+    driveDistance(50);
+    turn(RIGHT);
+
+		stopAll();
 	}
 }										        // Program ends, and the robot stops
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

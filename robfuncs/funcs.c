@@ -134,13 +134,27 @@ void reverseDistance(long time = 3000, int power = DEFAULTPOWER)
 	}
 }*/
 
-void turn(int deg = 90)
+void turn(int direction = RIGHT, int deg = 90)
 {
 	resetEncoders();
-	setMotors(127, -127);
-	while ((abs(SensorValue[rightEncoder]) / 360 * WHEELDIAMETER) < (deg / 360 * ROBOTDIAMETER))
+	int encoder;
+	if (direction == RIGHT)
 	{
-		wait1Msec(100);
+		encoder = rightEncoder;
+		setMotors(127, -127);
+	}
+	else
+	{
+		encoder = leftEncoder;
+		setMotors(-127, 127);
+	}
+	// while ((abs(SensorValue[encoder]) / 360 * WHEELDIAMETER) < (deg / 360 * ROBOTDIAMETER))
+	// {
+	// 	wait1Msec(10);
+	// }
+	while (abs(SensorValue[encoder]) < deg / 90 * 240)
+	{
+		wait1Msec(10);
 	}
 }
 
