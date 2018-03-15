@@ -40,6 +40,9 @@
 task main()
 {
 
-
+    while (SensorValue[lightsensor] < 300)
+    {
+        driveTime(10);
+    }
 
 }

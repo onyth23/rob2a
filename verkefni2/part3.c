@@ -33,13 +33,13 @@ task main()
 	{
     wait10Msec(1000);
 
-    driveDistance(10);
+    driveDistance(50);
     turn(LEFT);
-    driveDistance(10);
+    driveDistance(50);
     turn(RIGHT);
-    driveDistance(10);
+    driveDistance(50);
     turn(RIGHT);
-    driveDistance(10);
+    driveDistance(50);
 
 		stopAll();
 	}
