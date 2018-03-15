@@ -7,6 +7,11 @@ int Msec(int sec)
 	return sec / 1000;
 }
 
+int randomInt(int min, int max)
+{
+	return min + rand() % (max - min + 1);
+}
+
 void resetEncoders()
 {
 	SensorValue[leftEncoder] = 0;
