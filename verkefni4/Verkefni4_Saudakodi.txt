@@ -1,0 +1,14 @@
+START
+Ef ljósin eru kveikt
+Drive
+Ef sensor skynjar vegg fyrir framan sig
+Beygja 90°
+Drive
+Ef sensor skynjar vegg fyrir framan sig
+Beygja 90°
+Drive
+Ef sensor skynjar vegg fyrir framan sig
+Beygja 90°
+Drive
+...
+END
