@@ -30,7 +30,7 @@
 
 task main()
 {
-    wait10Msec(1000);
+   wait10Msec(1000);
 	while (true)
 	{
         if (vexRT[STOPBUTTON])
@@ -40,15 +40,15 @@ task main()
         }
         if (lineUnder(0))
         {
-            setMotors(55, 0);
+            setMotors(75, 0);
         }
         if (lineUnder(1))
         {
-            setMotors(35, 35);
+            setMotors(55, 55);
         }
         if (lineUnder(2))
         {
-            setMotors(0, 55);
+            setMotors(0, 75);
         }
 	}
 }										        // Program ends, and the robot stops
