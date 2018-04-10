@@ -1,0 +1,7 @@
+START
+Robot les line sensora og keyrir/beyjir útfrá þeim
+Ef hægri sensor sér línu, beygja til vinstri
+Ef visntri sensor sér línu, beygja til hægri
+Ef miðju sensorinn sér línu þá er Robot að fara beint og hann keyrir áfram.
+Þegar robot kemur að enda línu þá hættir hann að keyra.
+END
