@@ -26,7 +26,12 @@ void setMotors(int left = 127, int right = 127)
 
 void setArmPos(int pos)
 {
-
+	bool moveArmUp = pos < SensorValue[potientm];
+	while (moveArmUp && SensorValue[potientm] < pos || !moveArmUp && SensorValue[potientm] > pos)
+	{
+		motor[armMotor] = 60;
+		wait1Msec(3);
+	}
 }
 
 void driveTime(long time = 3000, int power = DEFAULTPOWER)

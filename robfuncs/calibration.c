@@ -13,5 +13,5 @@ void calArm()
 
 void calibrate()
 {
-    // cal_arm();
+    calArm();
 }
