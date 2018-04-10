@@ -117,6 +117,18 @@ void reverseDistance(long time = 3000, int power = DEFAULTPOWER)
 	driveDistance(time, power * -1);
 }
 
+bool lineUnder(int sensor)
+{
+	switch (sensor)
+	{
+		case 0: return SensorValue(lineRight) > threshold;
+		case 1: return SensorValue(lineCenter) > threshold;
+		case 2: return SensorValue(lineLeft) > threshold;
+		default: return false;
+	}
+}
+
+
 /*void stopDrive()
 {
 	if(motor[rightMotor] > 0 && motor[leftMotor] > 0)

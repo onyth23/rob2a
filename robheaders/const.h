@@ -4,3 +4,4 @@
 #define STOPBUTTON Btn8U
 #define RIGHT 1
 #define LEFT 2
+#define threshold 2500
