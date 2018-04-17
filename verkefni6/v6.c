@@ -56,7 +56,7 @@ void driveLine()
 	}
 	if (SensorValue(sonarCM) < 32 && SensorValue(sonarCM) != -1)
 	{
-		state = 1;
+		state++;
 		setMotors(0, 0);
 		return;
 	}
@@ -65,13 +65,14 @@ void driveLine()
 
 void pickupBall()
 {
-	setArmPos(400);
+	moveArm(1000, 60);
 	for (int i = 0; i < 600; i++)
 	{
 		checkStopButton();
-		motor[armGrab] = -60;
+		motor[armGrab] = 60;
 		wait1Msec(1);
 	}
+	motor[armGrab] = 0;
 	while (SensorValue(sonarCM) > 28)
 	{
 		checkStopButton();
@@ -82,16 +83,17 @@ void pickupBall()
 	for (int i = 0; i < 300; i++)
 	{
 		checkStopButton();
-		motor[armGrab] = 60;
+		motor[armGrab] = -60;
 		wait1Msec(1);
 	}
-	state = 2;
+	motor[armGrab] = 0;
+	state++;
 }
 
 void turnAround()
 {
-	turn(180);
-	state = 3;
+	turn(360);
+	state++;
 }
 
 void setBallIntoBasket()
@@ -106,16 +108,18 @@ void setBallIntoBasket()
 	for (int i = 0; i < 100; i++)
 	{
 		checkStopButton();
-		motor[armGrab] = -30;
-		wait1Msec(1);
-	}
-	for (int i = 0; i < 200; i++)
-	{
-		checkStopButton();
 		motor[armGrab] = 30;
 		wait1Msec(1);
 	}
-	state = 4;
+	motor[armGrab] = 0;
+	for (int i = 0; i < 200; i++)
+	{
+		checkStopButton();
+		motor[armGrab] = -30;
+		wait1Msec(1);
+	}
+	motor[armGrab] = 0;
+	state++;
 }
 
 //+++++++++++++++++++++++++++++++++++++++++++++| MAIN |+++++++++++++++++++++++++++++++++++++++++++++++
@@ -137,6 +141,7 @@ task main()
       	case 2: driveLine(); break;
       	case 3: setBallIntoBasket(); break;
       	case 4: stopAll(); return;
+      	default: stopAll(); return;
     	}
   	}
 }								        // Program ends, and the robot stops

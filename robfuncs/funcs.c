@@ -24,12 +24,24 @@ void setMotors(int left = 127, int right = 127)
 	motor[rightMotor] = right;
 }
 
+void moveArm(int time, int speed = 60)
+{
+	int counter = 0;
+	while (time <= counter)
+	{
+		motor[armMotor] = speed;
+		counter++;
+		wait1Msec(1);
+	}
+	motor[armMotor] = 0;
+}
+
 void setArmPos(int pos)
 {
 	bool moveArmUp = pos < SensorValue[potientm];
 	while (moveArmUp && SensorValue[potientm] < pos || !moveArmUp && SensorValue[potientm] > pos)
 	{
-		motor[armMotor] = 60;
+		motor[armMotor] = moveArmUp ? -60 : 20;
 		wait1Msec(3);
 	}
 }
