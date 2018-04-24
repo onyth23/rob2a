@@ -26,46 +26,60 @@
 #include "../robfuncs/funcs.c"
 
 int state = 0;
-
+int lastLineUnder = 0;
 
 void checkStopButton()
 {
 	if (vexRT[STOPBUTTON])
-  {
-      stopAll();
-      StopAllTasks();
-  }
+	{
+		stopAll();
+		StopAllTasks();
+	}
 }
 
-void driveLine()
+void driveLine(int endAt)
 {
 	while (true)
-  {
-    checkStopButton();
-    if (lineUnder(0))
-    {
-        setMotors(75, 0);
-    }
-    if (lineUnder(1))
-    {
-        setMotors(55, 55);
-    }
-    if (lineUnder(2))
-    {
-        setMotors(0, 75);
-	}
-	if (SensorValue(sonarCM) < 32 && SensorValue(sonarCM) != -1)
 	{
-		state++;
-		setMotors(0, 0);
-		return;
+		checkStopButton();
+		if (lineUnder(0))
+		{
+			setMotors(75, 0);
+			lastLineUnder = 0;
+		}
+		if (lineUnder(1))
+		{
+			setMotors(55, 55);
+		}
+		if (lineUnder(2))
+		{
+			setMotors(0, 75);
+			lastLineUnder = 2;
+		}
+		if (noLineUnder())
+		{
+			if (lastLineUnder == 0)
+			{
+				setMotors(75, 0);
+			}
+			else if (lastLineUnder == 2)
+			{
+				setMotors(0, 75);
+			}
+		}
+		if (SensorValue(sonarCM) < endAt && SensorValue(sonarCM) != -1)
+		{
+			state++;
+			setMotors(0, 0);
+			return;
+		}
 	}
-  }
+	wait10Msec(100);
 }
 
 void pickupBall()
 {
-	moveArm(1000, 60);
+	moveArm(700, 60);
 	for (int i = 0; i < 600; i++)
 	{
 		checkStopButton();
@@ -88,6 +102,7 @@ void pickupBall()
 	}
 	motor[armGrab] = 0;
 	state++;
+	wait10Msec(100);
 }
 
 void turnAround()
@@ -98,51 +113,53 @@ void turnAround()
 
 void setBallIntoBasket()
 {
-	while (SensorValue(sonarCM) > 3)
+	while (SensorValue(sonarCM) > 22)
 	{
 		checkStopButton();
 		setMotors(60, 60);
 		wait1Msec(1);
 	}
 	setMotors(0, 0);
-	for (int i = 0; i < 100; i++)
+	for (int i = 0; i < 300; i++)
 	{
 		checkStopButton();
-		motor[armGrab] = 30;
+		motor[armGrab] = 60;
 		wait1Msec(1);
 	}
 	motor[armGrab] = 0;
-	for (int i = 0; i < 200; i++)
+	for (int i = 0; i < 900; i++)
 	{
 		checkStopButton();
-		motor[armGrab] = -30;
+		motor[armGrab] = -60;
 		wait1Msec(1);
 	}
 	motor[armGrab] = 0;
 	state++;
+	wait10Msec(100);
 }
 
 //+++++++++++++++++++++++++++++++++++++++++++++| MAIN |+++++++++++++++++++++++++++++++++++++++++++++++
 
 task main()
 {
-    wait10Msec(1000);
-    while (True)
-    {
-    	if (vexRT[STOPBUTTON])
-      {
-          stopAll();
-          break;
-      }
-      switch (state)
-      {
-      	case 0: driveLine(); break;
-      	case 1: pickupBall(); break;
-      	case 2: driveLine(); break;
-      	case 3: setBallIntoBasket(); break;
-      	case 4: stopAll(); return;
-      	default: stopAll(); return;
-    	}
-  	}
+	wait10Msec(1000);
+	while (True)
+	{
+		if (vexRT[STOPBUTTON])
+		{
+			stopAll();
+			break;
+		}
+		switch (state)
+		{
+		case 0: driveLine(32); break;
+		case 1: pickupBall(); break;
+		case 2: turnAround(); break;
+		case 3: driveLine(25); break;
+		case 4: setBallIntoBasket(); break;
+		case 5: stopAll(); return;
+		default: stopAll(); return;
+		}
+	}
 }								        // Program ends, and the robot stops
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

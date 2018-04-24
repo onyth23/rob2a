@@ -27,9 +27,9 @@ void setMotors(int left = 127, int right = 127)
 void moveArm(int time, int speed = 60)
 {
 	int counter = 0;
-	while (time <= counter)
+	while (time < counter || time > counter)
 	{
-		motor[armMotor] = speed;
+		motor[armMotor] = speed * -1;
 		counter++;
 		wait1Msec(1);
 	}
@@ -143,6 +143,11 @@ bool lineUnder(int sensor)
 		case 2: return SensorValue(lineLeft) > threshold;
 		default: return false;
 	}
+}
+
+bool noLineUnder()
+{
+	return !lineUnder(0) && !lineUnder(1) && !lineUnder(2)
 }
 
 
