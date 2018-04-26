@@ -56,7 +56,7 @@ void driveLine(int endAt)
 			setMotors(0, 75);
 			lastLineUnder = 2;
 		}
-		if (noLineUnder())
+		/*if (noLineUnder())
 		{
 			if (lastLineUnder == 0)
 			{
@@ -66,7 +66,7 @@ void driveLine(int endAt)
 			{
 				setMotors(0, 75);
 			}
-		}
+		}*/
 		if (SensorValue(sonarCM) < endAt && SensorValue(sonarCM) != -1)
 		{
 			state++;
@@ -124,13 +124,6 @@ void setBallIntoBasket()
 	{
 		checkStopButton();
 		motor[armGrab] = 60;
-		wait1Msec(1);
-	}
-	motor[armGrab] = 0;
-	for (int i = 0; i < 900; i++)
-	{
-		checkStopButton();
-		motor[armGrab] = -60;
 		wait1Msec(1);
 	}
 	motor[armGrab] = 0;
