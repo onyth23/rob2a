@@ -1,0 +1,1 @@
+[Verkefni 7](https://youtu.be/9aTo0YV7KvE)
